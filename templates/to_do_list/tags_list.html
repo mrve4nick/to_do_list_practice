@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block content %}
+    <div class="d-flex justify-content-between mb-4">
+        <h2>📌 Tags</h2>
+        <a href="{% url 'to_do_list:tag-create-view' %}" class="btn btn-primary">+ New Tag</a>
+      </div>
+      {% if tags %}
+        <ul class="list-group">
+          {% for tag in tags %}
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+              {{ tag.name }}
+              <div class="btn-group">
+                <a href="{% url 'to_do_list:tag-update-view' tag.id %}" class="btn btn-sm btn-outline-secondary">Edit</a>
+                <a href="{% url 'to_do_list:tag-delete-view' tag.id %}" class="btn btn-sm btn-outline-danger">Delete</a>
+              </div>
+            </li>
+          {% endfor %}
+        </ul>
+      {% else %}
+        <div class="alert alert-info">No tags yet.</div>
+      {% endif %}
+{% endblock %}
