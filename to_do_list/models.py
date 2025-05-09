@@ -7,7 +7,7 @@ class Tag(models.Model):
     def __str__(self):
         return self.name
 
-class TaskModel(models.Model):
+class Task(models.Model):
     content = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
     deadline = models.DateTimeField(null=True, blank=True)
