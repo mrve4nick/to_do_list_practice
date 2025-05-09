@@ -3,5 +3,43 @@
     <title>Home Page</title>
 {% endblock %}
 {% block content %}
-    index
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="mb-0">📝 Todo List</h1>
+        <a href="{% url 'to_do_list:task-create-view' %}" class="btn btn-primary">+ Add New Task</a>
+    </div>
+
+    {% if tasks %}
+        <ul class="list-group">
+            {% for task in tasks %}
+                <li class="list-group-item d-flex justify-content-between align-items-start">
+                    <div class="ms-2 me-auto">
+                        <div class="fw-bold">{{ task.content }}</div>
+                        <small>
+                            Created: {{ task.created_at|date:"Y-m-d H:i" }}
+                            {% if task.deadline %} | Deadline: {{ task.deadline|date:"Y-m-d H:i" }}{% endif %}
+                            {% if task.tags.all %}
+                                | Tags:
+                                {% for tag in task.tags.all %}
+                                    <span class="badge bg-secondary">{{ tag.name }}</span>
+                                {% endfor %}
+                            {% endif %}
+                        </small>
+                    </div>
+                    <div class="btn-group">
+                        <a href="{% url 'to_do_list:task-update-view' pk=task.id %}" class="btn btn-sm btn-outline-secondary">Edit</a>
+                        <a href="{% url 'to_do_list:task-delete-view' pk=task.id %}" class="btn btn-sm btn-outline-danger">Delete</a>
+                        <form method="post" action="{% url 'to_do_list:index' %}" style="display:inline;">
+                            {% csrf_token %}
+                            <input type="hidden" name="task_id" value="{{ task.id }}">
+                            <button type="submit" class="btn btn-sm {% if not task.is_done %}btn-outline-success{% else %}btn-outline-warning{% endif %}">
+                                {% if not task.is_done %}Complete{% else %}Undo{% endif %}
+                            </button>
+                        </form>
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <div class="alert alert-info">No tasks yet. Go create one.</div>
+    {% endif %}
 {% endblock %}
