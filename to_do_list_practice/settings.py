@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'to_do_list',
+    'crispy_bootstrap4',
 ]
 
 MIDDLEWARE = [
